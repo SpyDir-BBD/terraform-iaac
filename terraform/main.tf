@@ -125,7 +125,7 @@ module "ec2-instance" {
   subnet_id                    = module.vpc.public_subnets[2]
   associate_public_ip_address  = true
 }
-#
+
 #output "ec2_public_ip" {
 #  value = module.ec2-instance.public_ip
 #}
