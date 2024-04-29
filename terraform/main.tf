@@ -17,7 +17,6 @@ module "vpc" {
   #create_igw = true
   #enable_nat_gateway  = true
   #single_nat_gateway  = true
-
   tags = {
     Terraform = "true"
     Environment = "dev"
