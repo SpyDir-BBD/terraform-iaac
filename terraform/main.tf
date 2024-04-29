@@ -17,7 +17,6 @@ module "vpc" {
   #create_igw = true
   #enable_nat_gateway  = true
   #single_nat_gateway  = true
-  #reuse_nat_ips       = true                    # <= Skip creation of EIPs for the NAT Gateways
 
   tags = {
     Terraform = "true"
