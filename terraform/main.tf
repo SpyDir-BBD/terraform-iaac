@@ -1,4 +1,4 @@
-# configured aws provider with proper credentials
+# configured aws provider with proper credential
 provider "aws" {
   region  = "eu-west-1"
 }
