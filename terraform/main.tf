@@ -13,10 +13,6 @@ module "vpc" {
   azs             = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
-  #create_vpc = true
-  #create_igw = true
-  #enable_nat_gateway  = true
-  #single_nat_gateway  = true
   tags = {
     Terraform = "true"
     Environment = "dev"
@@ -108,16 +104,22 @@ module "db" {
   create_db_option_group    = false
 }
 
-module "key-pair" {
-  source  = "terraform-aws-modules/key-pair/aws"
-  key_name = "spydir-server-ssh-key"
-  create_private_key = true
-}
+# module "key-pair" {
+#   source  = "terraform-aws-modules/key-pair/aws"
+#   key_name = "spydir-server-ssh-key"
+#   create_private_key = true
+#   private_key_algorithm = "RSA"
+# }
+
+#output "private_key_pem" {
+#  value = nonsensitive(module.key-pair.private_key_pem)
+#}
 
 module "ec2-instance" {
   source                       = "terraform-aws-modules/ec2-instance/aws"
+  availability_zone            = module.vpc.azs[2]
   name                         = "spydir-server-instance"
-  key_name                     = module.key-pair.key_pair_name
+  key_name                     = "ec2-spydir-ssh-key"
   instance_type                = "t2.micro"
   ami_ssm_parameter            = "/aws/service/canonical/ubuntu/server/22.04/stable/current/amd64/hvm/ebs-gp2/ami-id"
   vpc_security_group_ids       = [module.vpc_sg.security_group_id]
@@ -125,36 +127,36 @@ module "ec2-instance" {
   associate_public_ip_address  = true
 }
 
-#output "ec2_public_ip" {
-#  value = module.ec2-instance.public_ip
-#}
+output "ec2_public_ip" {
+  value = module.ec2-instance.public_ip
+}
 
-#module "ecr" {
-#  source = "terraform-aws-modules/ecr/aws"
-#
-#  repository_name = "spectacles-stack-api-repo"
-#  create_repository = false
-#
-#  repository_lifecycle_policy = jsonencode({
-#    rules = [
-#      {
-#        rulePriority = 1,
-#        description  = "Keep last 7 images",
-#        selection = {
-#          tagStatus     = "tagged",
-#          tagPrefixList = ["v"],
-#          countType     = "imageCountMoreThan",
-#          countNumber   = 7
-#        },
-#        action = {
-#          type = "expire"
-#        }
-#      }
-#    ]
-#  })
-#
-#  tags = {
-#    Terraform   = "true"
-#    Environment = "dev"
-#  }
-#}
+module "ecr" {
+  source = "terraform-aws-modules/ecr/aws"
+
+  repository_name = "spydir-server-repo"
+  #create_repository = true
+
+  repository_lifecycle_policy = jsonencode({
+    rules = [
+      {
+        rulePriority = 1,
+        description  = "Keep last 7 images",
+        selection = {
+          tagStatus     = "tagged",
+          tagPrefixList = ["v"],
+          countType     = "imageCountMoreThan",
+          countNumber   = 7
+        },
+        action = {
+          type = "expire"
+        }
+      }
+    ]
+  })
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
