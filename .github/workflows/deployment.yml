@@ -1,4 +1,4 @@
-name: Build and Release - DB
+name: Migrate and Build Resources
 on:
   push:
     branches:
