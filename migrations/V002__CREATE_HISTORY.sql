@@ -1,0 +1,8 @@
+CREATE TABLE history (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    filename VARCHAR(100) NOT NULL,
+    mainfiletype INTEGER NOT NULL,
+    userid INTEGER NOT NULL,
+    datecreated TIMESTAMP
+)
+
