@@ -117,7 +117,7 @@ module "db" {
 
 module "ec2-instance" {
   source                       = "terraform-aws-modules/ec2-instance/aws"
-  availability_zone            = module.vpc.azs[2]
+  #availability_zone            = module.vpc.azs[2]
   name                         = "spydir-server-instance"
   key_name                     = "ec2-spydir-ssh-key"
   instance_type                = "t2.micro"
