@@ -1,5 +1,6 @@
 ALTER TABLE history
-ADD CONSTRAINT fk_users_id FOREIGN KEY userid REFERENCES users(id);
+ADD CONSTRAINT fk_userid
+FOREIGN KEY (userid) REFERENCES users(id);
 
 /*ALTER TABLE Questions
 ADD CONSTRAINT QuestionsFK FOREIGN KEY (UserId) REFERENCES Users(UserId);

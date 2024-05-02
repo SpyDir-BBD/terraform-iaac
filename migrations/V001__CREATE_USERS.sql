@@ -1,5 +1,5 @@
 CREATE TABLE users (
   id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   username VARCHAR(100) NOT NULL,
-  themepreference INTEGER NOT NULL
+  themepreference INT NOT NULL
 );
