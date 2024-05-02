@@ -1,0 +1,2 @@
+ALTER TABLE history
+ADD FOREIGN KEY user REFERENCES users (id)
