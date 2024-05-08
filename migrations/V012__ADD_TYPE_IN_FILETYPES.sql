@@ -1,0 +1,1 @@
+INSERT INTO filetypes (filename) VALUES ('.other');
